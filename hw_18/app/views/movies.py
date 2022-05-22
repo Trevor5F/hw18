@@ -44,11 +44,10 @@ class MovieView(Resource):
 @movie_ns.route('/<int:mid>')
 class MovieView(Resource):
     def get(self, mid: int):
-        try:
-            movie = db.session.query(Movie).filter(Movie.id == mid).one()
+        movie = Movie.query.get(mid)
+        if movie:
             return movie_schema.dump(movie), 200
-        except Exception as e:
-            return str(e), 404
+        return f'Фильма с таким id нет',404
 
 
     def put(self, mid):

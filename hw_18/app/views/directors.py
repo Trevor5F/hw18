@@ -17,8 +17,7 @@ class DirectorView(Resource):
 @director_ns.route('/<int:did>')
 class DirectorView(Resource):
     def get(self, did: int):
-        try:
-            director = db.session.query(Director).filter(Director.id == did).one()
+        director = Director.query.get(did)
+        if director:
             return director_schema.dump(director), 200
-        except Exception as e:
-            return str(e), 404
+        return f'Режисёра с таким id нет',404

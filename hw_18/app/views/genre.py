@@ -14,11 +14,10 @@ class GenreView(Resource):
         all_genres = db.session.query(Genre).all()
         return genres_schema.dump(all_genres), 200
 
-@genre_ns.route('/<int:did>')
+@genre_ns.route('/<int:gid>')
 class GenreView(Resource):
-    def get(self, did: int):
-        try:
-            genre = db.session.query(Genre).filter(Genre.id == did).one()
+    def get(self, gid: int):
+        genre = Genre.query.get(gid)
+        if genre:
             return genre_schema.dump(genre), 200
-        except Exception as e:
-            return str(e), 404
+        return f'Жанра с таким id нет',404
